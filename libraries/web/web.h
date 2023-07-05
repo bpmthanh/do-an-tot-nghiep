@@ -344,6 +344,61 @@ const char webpage[] PROGMEM = R"=====(
 
 
 
+        /** Start Section Body 5 Style **/
+
+        #sha_temp_meta_4 {
+            margin-top: 30px;
+        }
+
+        #sha_temp_meta_4 .sha_tile>div {
+            position: relative;
+            border: 1px solid rgba(255, 255, 255, 0.7);
+            background-color: rgba(0, 0, 0, 0.01);
+            border-radius: 15px;
+            padding: 22px;
+            box-shadow: 15px 5px 20px -10px rgba(0, 0, 0, 0.15),
+                -15px -5px 20px -10px rgba(255, 255, 255, 0.8);
+        }
+
+        #sha_temp_meta_4 .sha_tile>div span.tile_icon {
+            display: inline-block;
+            width: 60px;
+            height: 60px;
+            text-align: center;
+            line-height: 60px;
+            font-size: 20px;
+            border-radius: 15px;
+            border: 1px solid rgba(0, 0, 0, 0.02);
+            background-color: rgba(0, 0, 0, 0.01);
+            color: rgba(49, 69, 106, 0.6);
+            box-shadow: 6px 6px 10px -1px rgba(0, 0, 0, 0.15),
+                -6px -6px 10px -1px rgba(255, 255, 255, 0.7);
+        }
+
+        #sha_temp_meta_4 .sha_tile>div span.tile_info {
+            position: absolute;
+            display: inline-block;
+            font-size: 16px;
+            font-weight: 500;
+            color: rgba(49, 69, 106, 0.8);
+            padding-left: 14px;
+            margin-top: 5px;
+        }
+
+        #sha_temp_meta_4 .sha_tile>div span.tile_info span {
+            display: block;
+            font-weight: 400;
+            color: rgba(49, 69, 106, 0.5);
+        }
+
+        #sha_temp_meta_4 .sha_tile:not(last-child) {
+            margin-bottom: 12px;
+        }
+
+        /** End Section Body 5 Style **/
+
+
+
         /** Start Section Footer Style **/
         #sha_footer {
             margin-top: 15px;
@@ -452,6 +507,16 @@ const char webpage[] PROGMEM = R"=====(
             margin-right: 5px;
         }
 
+        .history-user-camera {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .history-user-camera a:nth-child(2) {
+            color: red;
+        }
+
+
         @media (max-width: 600px) {
             td {
                 padding: 5px;
@@ -550,10 +615,6 @@ const char webpage[] PROGMEM = R"=====(
         var liElement = element.parentNode;
         // Kiểm tra xem class "on" có đang được áp dụng cho thẻ "li" không
         var isOn = liElement.classList.contains('on');
-
-        const listTable = $('#sha_temp_meta_1')
-        const listTable2 = $('#sha_temp_meta_2')
-        const listTable3 = $('#sha_temp_meta_3')
 
         // Lấy danh sách tất cả các thẻ "li" trong danh sách
         var liElements = element.parentNode.parentNode.getElementsByTagName("li");
@@ -684,7 +745,7 @@ const char webpage[] PROGMEM = R"=====(
                         <i class="fa fa-chevron-left"></i>
                     </div> -->
                             <div class="col-12">
-                                <span class="sub-heading">26 JAN 2020</span>
+                                <!-- <span class="sub-heading"></span> -->
                                 <span class="heading">Smart Lock</span>
                             </div>
                         </div>
@@ -709,6 +770,11 @@ const char webpage[] PROGMEM = R"=====(
                                     <li class="off">
                                         <span onclick="toggleClass(this)">
                                             <i class="mdi mdi-account-switch"></i>
+                                        </span>
+                                    </li>
+                                    <li class="off">
+                                        <span onclick="toggleClass(this)">
+                                            <i class="fa fa-camera"></i>
                                         </span>
                                     </li>
                                 </ul>
@@ -824,8 +890,6 @@ const char webpage[] PROGMEM = R"=====(
                     </section>
                     <!-- End Section Body 3 -->
 
-
-
                     <!-- Start Section Body 4 -->
                     <section id="sha_temp_meta_3" class="col-12 d-none">
                         <div class="row">
@@ -841,33 +905,73 @@ const char webpage[] PROGMEM = R"=====(
                     </section>
                     <!-- End Section Body 4 -->
 
-
+                    <!-- Start Section Body 4 -->
+                    <section id="sha_temp_meta_4" class="col-12 d-none">
+                        <!-- <div class="row">
+                            <div class="col-12 sha_tile">
+                                <div class="container">
+                                    <div class="history-user-camera">
+                                        <a href="https://drive.google.com/drive/folders/14sAAgFctTbna1vD6l3EvPGXoNimZ0e2_?hl=vi"
+                                            target="_blank">Lịch sử người dùng hợp lệ</a>
+                                        <a href="https://drive.google.com/drive/folders/1WKU3QXEy03a_yObKKoqZC-OEPrALVs8y?hl=vi"
+                                            target="_blank">Lịch sử người dùng không hợp lệ</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div> -->
+                        <div class="row">
+                            <div class="col-12 sha_tile">
+                                <div>
+                                    <span class="tile_icon" onclick=GetButtonData(4)>
+                                        <i class="mdi mdi-account-star"></i>
+                                    </span>
+                                    <span class="tile_info">
+                                        Lịch sử người dùng hợp lệ
+                                        <span><a href="https://drive.google.com/drive/folders/14sAAgFctTbna1vD6l3EvPGXoNimZ0e2_?hl=vi" target="_blank">Xem chi tiết</a></span>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="col-12 sha_tile">
+                                <div>
+                                    <span class="tile_icon" onclick=GetButtonData(5)>
+                                        <i class="mdi mdi-account-off"></i>
+                                    </span>
+                                    <span class="tile_info">
+                                        Lịch sử người dùng không hợp lệ
+                                        <span><a href="https://drive.google.com/drive/folders/1WKU3QXEy03a_yObKKoqZC-OEPrALVs8y?hl=vi" target="_blank">Xem chi
+                                                tiết</a></span>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                    <!-- End Section Body 4 -->
 
                     <!-- Start Section Footer -->
                     <!-- <section id="sha_footer" class="col-12">
-                    <div class="row">
-                        <div class="col-8">
-                            <div>
-                                <span class="footer_title">
-                                    Current Temperature
-                                </span>
-                                <span class="footer_data">
-                                    18.5 <span class="unit">&deg;C</span>
-                                </span>
+                        <div class="row">
+                            <div class="col-8">
+                                <div>
+                                    <span class="footer_title">
+                                        Current Temperature
+                                    </span>
+                                    <span class="footer_data">
+                                        18.5 <span class="unit">&deg;C</span>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <div>
+                                    <span class="footer_title text-right">
+                                        Turn On/Off
+                                    </span>
+                                    <span class="footer_data">
+                                        <span class="sha_switch pull-right"></span>
+                                    </span>
+                                </div>
                             </div>
                         </div>
-                        <div class="col-4">
-                            <div>
-                                <span class="footer_title text-right">
-                                    Turn On/Off
-                                </span>
-                                <span class="footer_data">
-                                    <span class="sha_switch pull-right"></span>
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-            </section> -->
+                    </section> -->
                     <!-- End Section Footer -->
                 </div>
 
