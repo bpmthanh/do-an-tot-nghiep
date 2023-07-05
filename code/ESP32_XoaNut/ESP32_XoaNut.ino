@@ -128,44 +128,6 @@ void gui(int dulieu)
 
 
 
-void Connect_Wifi()
-{
-  WiFi.mode(WIFI_STA);
-  Serial.print("Connecting to WiFi");
-  WiFi.begin(ssid, password);
-  Serial.println(ssid);
-  while (WiFi.status() != WL_CONNECTED)
-  {
-    delay(500);
-    Serial.print(".");
-  }
-  Serial.println("CONNECTED !!!");
-
-  IPAddress staticIP(192, 168, 137, 176); // Địa chỉ IP cố định
-  IPAddress gateway(192, 168, 137, 1); // Địa chỉ gateway của mạng
-  IPAddress subnet(255, 255, 255, 0); // Mặt nạ mạng
-
-  WiFi.config(staticIP, gateway, subnet);
-
-  // Kiểm tra nếu địa chỉ IP đã được gán thành công
-  if (WiFi.localIP() == staticIP)
-  {
-    Serial.println("Connect WiFi");
-    Serial.print("Address IP ESP: ");
-    Serial.println(WiFi.localIP());
-  }
-  else
-  {
-    Serial.println("Failed to set static IP!");
-  }
-}
-
-
-
-
-
-
-
 //void Connect_Wifi()
 //{
 //  WiFi.mode(WIFI_STA);
@@ -185,27 +147,42 @@ void Connect_Wifi()
 //
 //  WiFi.config(staticIP, gateway, subnet);
 //
-//  Serial.println("Connect WiFi");
-//  Serial.print("Address IP ESP: ");
-//  Serial.println(WiFi.localIP());
+//  // Kiểm tra nếu địa chỉ IP đã được gán thành công
+//  if (WiFi.localIP() == staticIP)
+//  {
+//    Serial.println("Connect WiFi");
+//    Serial.print("Address IP ESP: ");
+//    Serial.println(WiFi.localIP());
+//  }
+//  else
+//  {
+//    Serial.println("Failed to set static IP!");
+//  }
 //}
 
 
 
 
-
-
-
-
-void setupStaticWifi() {
-  IPAddress ip(192, 168, 137, 2);  // Thay đổi địa chỉ IP tại đây
-  IPAddress gateway(192, 168, 137, 1);
-  IPAddress subnet(255, 255, 255, 0);
-  WiFi.config(ip, gateway, subnet);
-
-  Serial.print("IP address: ");
+void  Connect_Wifi()
+{
+  WiFi.mode(WIFI_STA);
+  Serial.print("Connecting to WiFi");
+  WiFi.begin(ssid, password);
+  Serial.println(ssid);
+  while (WiFi.status() != WL_CONNECTED)
+  {
+    delay(500);
+    Serial.print(".");
+  }
+  Serial.println("CONNECTED !!!");
+  Serial.println("Connect WiFi");
+  Serial.print("Address IP ESP: ");
   Serial.println(WiFi.localIP());
 }
+
+
+
+
 
 
 int nowN = -1;

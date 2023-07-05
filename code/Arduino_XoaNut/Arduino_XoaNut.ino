@@ -113,35 +113,30 @@ void  MaHoa()
 
 int quetthe(long thoigian)
 {
-  //  Serial.print("\nBat dau quet the: ");
   long l = millis();
   while (1)
   {
     while ( ! mfrc522.PICC_IsNewCardPresent())
     {
       if (millis() - l > thoigian) {
-        Serial.print("\n");
         return 0 ;
       }
     }
     while ( ! mfrc522.PICC_ReadCardSerial())
     {
-      if (millis() - l > thoigian)
+      if (millis() - l > thoigian) {
         return 0 ;
+      }
     }
 
 
     for (byte i = 0; i < mfrc522.uid.size; i++)
     {
-      //      Serial.print(mfrc522.uid.uidByte[i] < 0x10 ? " 0" : " ");
       UID[i] = mfrc522.uid.uidByte[i];
-      //      Serial.print(UID[i]);
     }
     MaHoa();
-    //    MaHoaString();
     mfrc522.PICC_HaltA();
     mfrc522.PCD_StopCrypto1();
-
     return 1;
   }
 }
@@ -149,9 +144,6 @@ int quetthe(long thoigian)
 
 void uint32_tToByte()
 {
-  //  esp.println(chuoithe);
-  //  Serial.print("Da gui: ");
-  //  Serial.println(chuoithe);
   Bao();
 }
 
@@ -162,21 +154,8 @@ int Check_Key(int diaChiBatDau, int diaChiSoKyTu)
 {
   char a[5];
 
-  //  unsigned long startTime = millis();
-  //  unsigned long duration = 0;
-  //  const unsigned long TIMEOUT = 4000;
-
   while (Num_Key < 6)
   {
-    // Kiểm tra thời gian trôi qua
-    //    duration = millis() - startTime;
-
-    // Kiểm tra nếu đã trôi qua 4 giây
-    //    if (duration >= TIMEOUT)
-    //    {
-    //      resetFunc(); // Reset lại Arduino
-    //    }
-
     index = keyPad.getKey();
     if (keys[index] != 'N' && keys[index] != 'F')
     {
@@ -380,7 +359,7 @@ void DoiMatKhau()
     {
       //      unsigned long duration = millis() - startTime;
       // Kiểm tra nếu đã trôi qua 4 giây
-      //      if (duration >= 4000)
+      //      if (duration >= 7000)
       //      {
       //        resetFunc(); // Reset lại Arduino
       //      }
@@ -400,8 +379,15 @@ void DoiMatKhau()
     lcd.clear();
     lcd.print("XAC NHAN LAI");
     lcd.setCursor(0, 1);
+    //    unsigned long startTime2 = millis();
     while (m < 6)
     {
+      //      unsigned long duration2 = millis() - startTime2;
+      // Kiểm tra nếu đã trôi qua 4 giây
+      //      if (duration2 >= 7000)
+      //      {
+      //        resetFunc(); // Reset lại Arduino
+      //      }
       index = keyPad.getKey();
       if (keys[index] != 'N' && keys[index] != 'F')
       {
@@ -667,7 +653,7 @@ void setup()
 
   // Đọc và in giá trị lưu trong EEPROM từ địa chỉ 0 đến 255
   //  Serial.print("\n");
-  //  for (int i = 1005; i <= 1024; i++) {
+  //  for (int i = 0; i <= 1024; i++) {
   //    byte value = EEPROM.read(i);
   //    Serial.print("EEPROM[");
   //    Serial.print(i);
@@ -675,13 +661,9 @@ void setup()
   //    Serial.println(value);
   //  }
 
-
-  if (!rtc.isrunning()) {
-    Serial.println("RTC không hoạt động! Đang thiết lập thời gian ban đầu...");
-
-    // Đặt thời gian ban đầu của RTC bằng thời gian hiện tại
-    rtc.adjust(DateTime(F(__DATE__), F(__TIME__)));
-  }
+  //set date
+  DateTime currentTime = DateTime(2023, 7, 5, 8, 27, 0);
+  rtc.adjust(currentTime);
 
 
 }
@@ -689,8 +671,8 @@ void setup()
 
 void loop()
 {
+  chedomocua = AVR_EEPROM.read_2_byte(addrcheDoMocua);
   unsigned long lastGetDataTime = 0;
-
   if (digitalRead(menu) == 0)
   {
     delay(50);
@@ -852,7 +834,7 @@ void loop()
             ktra = 1;
           }
 
-          if (AVR_EEPROM.read_2_byte(addrcheDoMocua) == 0) 
+          if (AVR_EEPROM.read_2_byte(addrcheDoMocua) == 0)
           {
             lcd.clear();
             lcd.print("NHAP MAT KHAU");

@@ -354,11 +354,6 @@ void setup() {
   } 
 
   if (WiFi.status() == WL_CONNECTED) {    //若連線成功
-    IPAddress staticIP(192, 168, 137, 177);  // Địa chỉ IP tĩnh mới
-    IPAddress gateway(192, 168, 137, 1);     // Địa chỉ gateway
-    IPAddress subnet(255, 255, 255, 0);      // Mặt nạ mạng
-
-    WiFi.config(staticIP, gateway, subnet);
 
     WiFi.softAP((WiFi.localIP().toString() + "_" + (String)apssid).c_str(), appassword);
     Serial.println("");
