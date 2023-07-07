@@ -14,10 +14,10 @@ SoftwareSerial esp(32, 33);
 const char * ssid = "ThanhBui";
 const char * password = "autoship";
 
-const char* serverName = "https://finalfeteliotproject.000webhostapp.com/data_client.php";
+const char* serverName = "https://hcmusiotproject.000webhostapp.com/data_client.php";
 String apiKeyValue = "tPmAT5Ab3j7F9";
 
-const char* serverNameHistoryClient = "https://finalfeteliotproject.000webhostapp.com/history_client.php";
+const char* serverNameHistoryClient = "https://hcmusiotproject.000webhostapp.com/history_client.php";
 String apiKeyValueHistoryClient = "tPmAT5Ab3j7F8";
 
 String GOOGLE_SCRIPT_ID = "AKfycbwf6vVyl5Rjouch_7mIAUm3hFX2cgXf49TCFa9nEEDiXuPPRv53kQT0e3MR0Iu_fW1a";
@@ -93,11 +93,10 @@ void NhanTinNhan()
   Serial.println(a);
   b = response.substring(10, 21);
   Serial.println(b);
-  if (b.indexOf("+84924694598") >= 0)
+  if (b.indexOf("84924694598") >= 0)
   {
     if (response.indexOf("OPEN") >= 0)
     {
-      Serial.println("Gui du lieu mo cua");
       gui(9);
     }
     else if (response.indexOf("WIFI") >= 0) {
@@ -307,7 +306,6 @@ void senDataToSQLAndDel(String mathe) {
 
 
 
-
 void setup()
 {
   Serial.begin(19200);
@@ -358,8 +356,21 @@ void setup()
 }
 
 
+boolean wifiConnected = false; // Biến flag để kiểm tra trạng thái kết nối WiFi
 void loop()
 {
+  if (!wifiConnected) {
+    Connect_Wifi(); // Kết nối WiFi khi mất kết nối hoặc chưa kết nối
+  }
+  // Kiểm tra trạng thái kết nối WiFi
+  if (WiFi.status() != WL_CONNECTED) {
+    wifiConnected = false; // Kết nối mất, cần kết nối lại
+  } else {
+    wifiConnected = true; // Đã kết nối WiFi
+  }
+
+  
+
   if ((danggoi == 1 ) && (millis() - last2 > 30000))
   {
     danggoi = 0;

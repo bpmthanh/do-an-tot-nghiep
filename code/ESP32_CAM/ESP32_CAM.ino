@@ -1,41 +1,41 @@
 /*
-  ESP32-CAM
-  Open the page in Chrome.
-  Author : ChungYi Fu (Kaohsiung, Taiwan)  2020-1-18 16:00
-  https://www.facebook.com/francefu
+ESP32-CAM 
+Open the page in Chrome.
+Author : ChungYi Fu (Kaohsiung, Taiwan)  2020-1-18 16:00
+https://www.facebook.com/francefu
 
-  Servo1 -> gpio2 (common ground)
-  Servo2 -> gpio13 (common ground)
+Servo1 -> gpio2 (common ground)
+Servo2 -> gpio13 (common ground)
 
-  建立Google Apps Script，可應用於雲端硬碟、試算表等存取。設定權限任何能都能存取。
-  https://github.com/fustyles/webduino/blob/gs/SendCapturedImageToGoogleDriveAndLinenotify_doPost.gs
+建立Google Apps Script，可應用於雲端硬碟、試算表等存取。設定權限任何能都能存取。
+https://github.com/fustyles/webduino/blob/gs/SendCapturedImageToGoogleDriveAndLinenotify_doPost.gs
 
-  如何新增Script
-  https://www.youtube.com/watch?v=f46VBqWwUuI
+如何新增Script
+https://www.youtube.com/watch?v=f46VBqWwUuI
 
-  Google Script管理介面
-  https://script.google.com/home
-  https://script.google.com/home/executions
-  Google雲端硬碟管理介面
-  https://drive.google.com/drive/my-drive
+Google Script管理介面
+https://script.google.com/home
+https://script.google.com/home/executions
+Google雲端硬碟管理介面
+https://drive.google.com/drive/my-drive
 
-  自訂指令格式 :
-  http://APIP/?cmd=P1;P2;P3;P4;P5;P6;P7;P8;P9
-  http://STAIP/?cmd=P1;P2;P3;P4;P5;P6;P7;P8;P9
+自訂指令格式 :  
+http://APIP/?cmd=P1;P2;P3;P4;P5;P6;P7;P8;P9
+http://STAIP/?cmd=P1;P2;P3;P4;P5;P6;P7;P8;P9
 
-  預設AP端IP： 192.168.4.1
-  http://192.168.xxx.xxx/?ip
-  http://192.168.xxx.xxx/?mac
-  http://192.168.xxx.xxx/?restart
-  http://192.168.xxx.xxx/?flash=value        //value= 0 ~ 255
-  http://192.168.xxx.xxx/?servo1=value        //value= 1700 ~ 8000
-  http://192.168.xxx.xxx/?servo2=value        //value= 1700 ~ 8000
-  http://192.168.xxx.xxx/?getstill
-  http://192.168.xxx.xxx/?SendCapturedImage=stop
-
-  查詢Client端IP：
-  查詢IP：http://192.168.4.1/?ip
-  重設網路：http://192.168.4.1/?resetwifi=ssid;password
+預設AP端IP： 192.168.4.1
+http://192.168.xxx.xxx/?ip
+http://192.168.xxx.xxx/?mac
+http://192.168.xxx.xxx/?restart
+http://192.168.xxx.xxx/?flash=value        //value= 0 ~ 255
+http://192.168.xxx.xxx/?servo1=value        //value= 1700 ~ 8000
+http://192.168.xxx.xxx/?servo2=value        //value= 1700 ~ 8000
+http://192.168.xxx.xxx/?getstill
+http://192.168.xxx.xxx/?SendCapturedImage=stop
+      
+查詢Client端IP：
+查詢IP：http://192.168.4.1/?ip
+重設網路：http://192.168.4.1/?resetwifi=ssid;password
 */
 
 //輸入WIFI連線帳號密碼
@@ -354,11 +354,10 @@ void setup() {
   } 
 
   if (WiFi.status() == WL_CONNECTED) {    //若連線成功
-
-    WiFi.softAP((WiFi.localIP().toString() + "_" + (String)apssid).c_str(), appassword);
+    WiFi.softAP((WiFi.localIP().toString()+"_"+(String)apssid).c_str(), appassword);   //設定SSID顯示客戶端IP         
     Serial.println("");
     Serial.println("STAIP address: ");
-    Serial.println(WiFi.localIP());
+    Serial.println(WiFi.localIP()); 
 
     for (int i=0;i<5;i++) {   //若連上WIFI設定閃光燈快速閃爍
       ledcWrite(4,10);

@@ -1,5 +1,3 @@
-
-
 #include<DS1307RTC.h>
 #include <DS1307.h>
 #include <Wire.h>
@@ -139,12 +137,6 @@ int quetthe(long thoigian)
     mfrc522.PCD_StopCrypto1();
     return 1;
   }
-}
-
-
-void uint32_tToByte()
-{
-  Bao();
 }
 
 
@@ -319,14 +311,6 @@ void setup1()
 
 
 
-void Bao()
-{
-  digitalWrite(A0, 1);
-  delay(100);
-  digitalWrite(A0, 0);
-}
-
-
 
 void set(unsigned int x)
 {
@@ -415,7 +399,6 @@ void DoiMatKhau()
         lcd.clear();
         ktra = 2;
         Dem_Pass++;
-        resetFunc(); // Reset lại Arduino
         break;
       }
     }
@@ -452,7 +435,6 @@ void DoiMatKhau()
       Dem_Pass++;
     }
   }
-  resetFunc(); // Reset lại Arduino
 }
 
 
@@ -661,9 +643,11 @@ void setup()
   //    Serial.println(value);
   //  }
 
+
+
   //set date
-  DateTime currentTime = DateTime(2023, 7, 5, 8, 27, 0);
-  rtc.adjust(currentTime);
+  //    DateTime currentTime = DateTime(2023, 7, 7, 12, 9, 0);
+  //    rtc.adjust(currentTime);
 
 
 }
@@ -696,7 +680,7 @@ void loop()
 
     if (esp.available())
     {
-      Bao(); // có dữ liệu
+      SPAM(0);
       mathe = esp.readStringUntil('\n');
 
 
@@ -748,8 +732,6 @@ void loop()
             AVR_EEPROM.write_2_byte(addrendaddrcard, addr);
             indexData = 0;
           }
-
-
         }
       }
 
@@ -758,24 +740,23 @@ void loop()
         chedomocua = 1;
         AVR_EEPROM.write_2_byte(addrcheDoMocua, chedomocua);
         dulieu = 0;
+        resetFunc();
       }
       if (dulieu == 7)
       {
         chedomocua = 0;
         AVR_EEPROM.write_2_byte(addrcheDoMocua, chedomocua);
         dulieu = 0;
+        resetFunc();
       }
       if (dulieu == 9)
       {
-        // digitalWrite(A0,1);
         setup1();
         set(4200); // 90 độ
         delay(2000);
-        // digitalWrite(A0,0);
         set(2200); // 0 độ
         dulieu = 0;
         Serial.println("OPENED!\n");
-
       }
       if (dulieu == 10)
       {
@@ -786,11 +767,13 @@ void loop()
       {
         ThemThe();
         dulieu = 0;
+        resetFunc();
       }
       if (dulieu == 12)
       {
         XoaThe();
         dulieu = 0;
+        resetFunc();
       }
     }
   }
@@ -821,7 +804,6 @@ void loop()
             lcd.print("MAT KHAU DUNG");
             lcd.setCursor( 0, 1);
             lcd.print("WELCOME");
-            uint32_tToByte();
 
             setup1();
             set(4200); // 90 độ
@@ -848,7 +830,6 @@ void loop()
               lcd.print("MAT KHAU DUNG");
               lcd.setCursor( 0, 1);
               lcd.print("WELCOME");
-              uint32_tToByte();
 
               setup1();
               set(4200); // 90 độ
