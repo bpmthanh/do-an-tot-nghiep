@@ -1,4 +1,4 @@
-const char webpage[] PROGMEM = R"=====(
+const char webpage[] PROGMEM = R"=====( 
 
 
 <!DOCTYPE html>
@@ -7,7 +7,7 @@ const char webpage[] PROGMEM = R"=====(
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
-    <title>Secure lock door</title>
+    <title>HỆ THỐNG CỬA BẢO MẬT</title>
     <link rel="stylesheet" href="https://cdn.materialdesignicons.com/6.5.95/css/materialdesignicons.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -83,6 +83,7 @@ const char webpage[] PROGMEM = R"=====(
             font-family: 'Baloo', cursive;
             color: tomato;
             font-size: 30px;
+            display: none;
         }
 
         .weather-font {
@@ -965,7 +966,7 @@ const char webpage[] PROGMEM = R"=====(
     document.addEventListener("DOMContentLoaded", function () {
         var subHeading = document.querySelector('.sub-heading');
         var today = new Date();
-        var formattedDate = today.getDate() + ' ' + (today.toLocaleString('default', { month: 'short' })) + ' ' + today.getFullYear();
+        var formattedDate = 'Ngày ' + today.getDate() + ' tháng ' + (today.getMonth() + 1) + ' năm ' + today.getFullYear();
         subHeading.innerHTML = formattedDate;
     });
 
@@ -1198,8 +1199,8 @@ const char webpage[] PROGMEM = R"=====(
         <div class="content" id="dangnhap" style="display: block;">
             <div class="flex-div">
                 <div class="name-content">
-                    <h1 class="logo">Secure lock door</h1>
-                    <p>Khóa thông minh cho cuộc sống an toàn và tiện lợi!</p>
+                    <h1 class="logo">HỆ THỐNG CỬA BẢO MẬT</h1>
+                    <p>Lựa chọn bảo mật và an toàn dành cho bạn.!</p>
                 </div>
                 <form>
                     <input type="text" placeholder="Tên đăng nhập" required id="ssid" />
@@ -1225,7 +1226,7 @@ const char webpage[] PROGMEM = R"=====(
                         <section id="sha_header_bar" class="col-12">
                             <div class="row">
                                 <div class="col-12">
-                                    <span class="heading">Secure lock door</span>
+                                    <span class="heading">HỆ THỐNG CỬA BẢO MẬT</span>
                                 </div>
                                 <div class="col-12">
                                     <span class="sub-heading">26 JAN 2020</span>
@@ -1416,8 +1417,7 @@ const char webpage[] PROGMEM = R"=====(
                             <div class="col-12 sha_title">
                                 <div class="container">
                                     <h2>LỊCH SỬ NGƯỜI DÙNG</h2>
-                                    <iframe
-                                        src="https://hcmusiotproject.000webhostapp.com/history_client_index.php"
+                                    <iframe src="https://hcmusiotproject.000webhostapp.com/history_client_index.php"
                                         width="100%" height="420" scrolling="yes" frameborder="0"></iframe>
                                 </div>
                             </div>
