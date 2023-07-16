@@ -32,10 +32,10 @@ int fid;
 String ten;
 
 int startaddrcard = 2;
-int addrendaddrcard = 900;
+int addrendaddrcard = 300;
 int startaddrpass = 1010; // địa chỉ bắt đầu của mảng char mật khẩu
 int addrnumkey = 1005; // địa chỉ lưu số kí tự trong mật khẩu
-int addrcheDoMocua = 200; // địa chỉ lưu số kí tự trong mật khẩu
+int addrcheDoMocua = 400; // địa chỉ lưu số kí tự trong mật khẩu
 
 uint8_t index;
 char daysOfTheWeek[7][12] = {"Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"};
@@ -57,7 +57,7 @@ byte chuoi[16];
 int ID;
 int dulieu = 0;
 String mathe;
-char chedomocua = 0;
+int chedomocua = 0;
 int suco = 0;
 String chuoithe;
 int UID[4], i;
@@ -142,9 +142,52 @@ int quetthe(long thoigian)
 
 
 
+//int Check_Key(int diaChiBatDau, int diaChiSoKyTu)
+//{
+//  char a[5];
+//
+//  while (Num_Key < 6)
+//  {
+//    index = keyPad.getKey();
+//    if (keys[index] != 'N' && keys[index] != 'F')
+//    {
+//      lcd.setCursor((0 + Num_Key), 1);
+//      delay(100);
+//      lcd.print("*");
+//      delay(150);
+//      a[Num_Key++] = keys[index];
+//    }
+//  }
+//
+//
+//  for (int i = 0; i <= sizeof(a) / sizeof(a[0]); i++) {
+//    Serial.print(a[i] - 48);
+//  }
+//  Serial.println();
+//
+//
+//
+//  Num_Key = 0;
+//  int j;
+//  k = 0;
+//  for (j = diaChiBatDau; j < diaChiBatDau + 6; j++)
+//  {
+//    if (AVR_EEPROM.read_1_byte(j) != a[k] - 48)
+//    {
+//      return 0;
+//    }
+//    k++;
+//  }
+//  return 1;
+//}
+
+
+
+
 int Check_Key(int diaChiBatDau, int diaChiSoKyTu)
 {
   char a[5];
+  unsigned long startTime = millis(); // Thời điểm bắt đầu nhập mật khẩu
 
   while (Num_Key < 6)
   {
@@ -156,17 +199,19 @@ int Check_Key(int diaChiBatDau, int diaChiSoKyTu)
       lcd.print("*");
       delay(150);
       a[Num_Key++] = keys[index];
+      startTime = millis(); // Reset thời gian bắt đầu nhập mật khẩu
+    }
+
+    if (millis() - startTime >= 6000) // Kiểm tra đã trôi qua 6 giây chưa
+    {
+      resetFunc(); // Reset lại chương trình
     }
   }
-
-
 
   for (int i = 0; i <= sizeof(a) / sizeof(a[0]); i++) {
     Serial.print(a[i] - 48);
   }
   Serial.println();
-
-
 
   Num_Key = 0;
   int j;
@@ -181,6 +226,8 @@ int Check_Key(int diaChiBatDau, int diaChiSoKyTu)
   }
   return 1;
 }
+
+
 
 
 
@@ -328,34 +375,145 @@ void set(unsigned int x)
 
 
 
-void DoiMatKhau()
-{
+
+//void DoiMatKhau()
+//{
+//  Dem_Pass = 0;
+//  //  unsigned long startTime = millis();
+//  while (Dem_Pass < 2)
+//  {
+//    lcd.clear();
+//    lcd.print("MAT KHAU MOI");
+//
+//    lcd.setCursor(0, 1);
+//    m = 0;
+//    while (m < 6)
+//    {
+//      index = keyPad.getKey();
+//      if (keys[index] != 'N' && keys[index] != 'F')
+//      {
+//        lcd.print(keys[index]);
+//        lcd.setCursor((0 + m), 1);
+//        delay(100);
+//        lcd.print("*");
+//        delay(150);
+//        c[m++] = keys[index];
+//      }
+//    }
+//    delay(100);
+//    m = 0;
+//    lcd.clear();
+//    lcd.print("XAC NHAN LAI");
+//    lcd.setCursor(0, 1);
+//    //    unsigned long startTime2 = millis();
+//    while (m < 6)
+//    {
+//      index = keyPad.getKey();
+//      if (keys[index] != 'N' && keys[index] != 'F')
+//      {
+//        lcd.print(keys[index]);
+//        lcd.setCursor((0 + m), 1);
+//        delay(100);
+//        lcd.print("*");
+//        delay(150);
+//        d[m++] = keys[index];
+//      }
+//    }
+//    n = 0;
+//    ktra = 0;
+//
+//    for (k = 0; k < 6; k++)
+//    {
+//      if (c[k] != d[k])
+//      {
+//        n = 1;
+//        lcd.clear();
+//        lcd.print("KHONG TRUNG KHOP");
+//        Serial.println("WARNING!\n");
+//        SPAM(0);
+//        delay(1000);
+//        lcd.clear();
+//        ktra = 2;
+//        Dem_Pass++;
+//        break;
+//      }
+//    }
+//    if (n == 0)
+//    {
+//      k = 0;
+//      for (m = startaddrpass; m < startaddrpass + 6; m++)
+//      {
+//        if (AVR_EEPROM.read_1_byte(m) != (c[k]) - 48)
+//        {
+//          ktra = 1;
+//          lcd.clear();
+//          lcd.print("HOAN THANH");
+//          delay(1000);
+//          for (k = 0; k < 6; k++)
+//          {
+//            AVR_EEPROM.write_1_byte(1010 + k, c[k] - 48);
+//          }
+//          Dem_Pass = 3;
+//          break;
+//        }
+//        k++;
+//      }
+//    }
+//    if (ktra == 0)
+//    {
+//      lcd.clear();
+//      lcd.print("PASS MOI GIONG");
+//      lcd.setCursor(0, 1);
+//      lcd.print("PASS CU");
+//      SPAM(0);
+//      delay(1000);
+//      lcd.clear();
+//      Dem_Pass++;
+//    }
+//  }
+//}
+
+
+
+unsigned long startTime;
+const unsigned long timeout = 6000; // 6 seconds in milliseconds
+
+void resetTimer() {
+  startTime = millis();
+}
+
+bool isTimeout() {
+  return (millis() - startTime) >= timeout;
+}
+
+
+void DoiMatKhau() {
   Dem_Pass = 0;
-  //  unsigned long startTime = millis();
-  while (Dem_Pass < 2)
-  {
+  while (Dem_Pass < 2) {
+    resetTimer(); // Reset the timer at the beginning of each loop
+
     lcd.clear();
     lcd.print("MAT KHAU MOI");
 
     lcd.setCursor(0, 1);
     m = 0;
-    while (m < 6)
-    {
-      //      unsigned long duration = millis() - startTime;
-      // Kiểm tra nếu đã trôi qua 4 giây
-      //      if (duration >= 7000)
-      //      {
-      //        resetFunc(); // Reset lại Arduino
-      //      }
+    while (m < 6) {
       index = keyPad.getKey();
-      if (keys[index] != 'N' && keys[index] != 'F')
-      {
+      if (keys[index] != 'N' && keys[index] != 'F') {
         lcd.print(keys[index]);
         lcd.setCursor((0 + m), 1);
         delay(100);
         lcd.print("*");
         delay(150);
         c[m++] = keys[index];
+        resetTimer(); // Reset the timer whenever a character is entered
+      }
+
+      if (isTimeout()) {
+        lcd.clear();
+        //        lcd.print("RESET FUNCTION");
+        delay(1000);
+        return; // Exit the function if timeout occurs
       }
     }
     delay(100);
@@ -363,33 +521,33 @@ void DoiMatKhau()
     lcd.clear();
     lcd.print("XAC NHAN LAI");
     lcd.setCursor(0, 1);
-    //    unsigned long startTime2 = millis();
-    while (m < 6)
-    {
-      //      unsigned long duration2 = millis() - startTime2;
-      // Kiểm tra nếu đã trôi qua 4 giây
-      //      if (duration2 >= 7000)
-      //      {
-      //        resetFunc(); // Reset lại Arduino
-      //      }
+    // Reset the timer before entering the second password
+    resetTimer();
+    while (m < 6) {
       index = keyPad.getKey();
-      if (keys[index] != 'N' && keys[index] != 'F')
-      {
+      if (keys[index] != 'N' && keys[index] != 'F') {
         lcd.print(keys[index]);
         lcd.setCursor((0 + m), 1);
         delay(100);
         lcd.print("*");
         delay(150);
         d[m++] = keys[index];
+        resetTimer(); // Reset the timer whenever a character is entered
+      }
+
+      if (isTimeout()) {
+        lcd.clear();
+        //        lcd.print("RESET FUNCTION");
+        delay(1000);
+        return; // Exit the function if timeout occurs
       }
     }
+
     n = 0;
     ktra = 0;
 
-    for (k = 0; k < 6; k++)
-    {
-      if (c[k] != d[k])
-      {
+    for (k = 0; k < 6; k++) {
+      if (c[k] != d[k]) {
         n = 1;
         lcd.clear();
         lcd.print("KHONG TRUNG KHOP");
@@ -402,19 +560,16 @@ void DoiMatKhau()
         break;
       }
     }
-    if (n == 0)
-    {
+
+    if (n == 0) {
       k = 0;
-      for (m = startaddrpass; m < startaddrpass + 6; m++)
-      {
-        if (AVR_EEPROM.read_1_byte(m) != (c[k]) - 48)
-        {
+      for (m = startaddrpass; m < startaddrpass + 6; m++) {
+        if (AVR_EEPROM.read_1_byte(m) != (c[k]) - 48) {
           ktra = 1;
           lcd.clear();
           lcd.print("HOAN THANH");
           delay(1000);
-          for (k = 0; k < 6; k++)
-          {
+          for (k = 0; k < 6; k++) {
             AVR_EEPROM.write_1_byte(1010 + k, c[k] - 48);
           }
           Dem_Pass = 3;
@@ -423,8 +578,8 @@ void DoiMatKhau()
         k++;
       }
     }
-    if (ktra == 0)
-    {
+
+    if (ktra == 0) {
       lcd.clear();
       lcd.print("PASS MOI GIONG");
       lcd.setCursor(0, 1);
@@ -618,7 +773,7 @@ void setDate() {
   int currentDay = now.day(); // Lấy giá trị ngày hiện tại
   int currentMonth = now.month(); // Lấy giá trị tháng hiện tại
   int currentYear = now.year(); // Lấy giá trị năm hiện tại
-  now = DateTime(currentYear, currentMonth, currentDay + 1, now.hour(), now.minute(), now.second()); // Tạo đối tượng DateTime mới với ngày mới
+  now = DateTime(currentYear, currentMonth, currentDay, now.hour(), now.minute(), now.second()); // Tạo đối tượng DateTime mới với ngày mới
   rtc.adjust(now);
 }
 
@@ -639,9 +794,9 @@ void setup()
 
 
   // Xóa toàn bộ EEPROM
-  //    for (int i = 0; i < EEPROM.length(); i++) {
-  //      EEPROM.write(i, 0);
-  //    }
+  //      for (int i = 0; i < EEPROM.length(); i++) {
+  //        EEPROM.write(i, 0);
+  //      }
 
   // Đọc và in giá trị lưu trong EEPROM từ địa chỉ 0 đến 255
   //  Serial.print("\n");
@@ -660,39 +815,19 @@ void setup()
   //  rtc.adjust(currentTime);
 
 
-
-  setDate();
+  //  setDate();
 
 }
 
 
-
-const int TIME_CHECK_INTERVAL = 1000; // Thời gian kiểm tra giây (1 giây)
-const int MINUTE_THRESHOLD = 60; // Ngưỡng lệch phút (60 giây)
-
-unsigned long lastTimeChecked = 0; // Biến lưu thời gian kiểm tra cuối cùng
-int secondsElapsed = 0; // Biến đếm số giây đã trôi qua
 void loop()
 {
 
   chedomocua = AVR_EEPROM.read_2_byte(addrcheDoMocua);
-  unsigned long lastGetDataTime = 0;unsigned long currentTime = millis();
-
-  // Kiểm tra giây mỗi TIME_CHECK_INTERVAL
-  if (currentTime - lastTimeChecked >= TIME_CHECK_INTERVAL) {
-    lastTimeChecked = currentTime;
-    secondsElapsed++;
-
-    // Kiểm tra lệch phút vượt quá ngưỡng
-    if (secondsElapsed >= MINUTE_THRESHOLD) {
-      secondsElapsed = 0; // Đặt lại biến đếm về 0
-      setDate(); // Gọi hàm setDate() để cài đặt lại giờ
-    }
-  }
 
 
 
-  
+
   if (digitalRead(menu) == 0)
   {
     delay(50);
