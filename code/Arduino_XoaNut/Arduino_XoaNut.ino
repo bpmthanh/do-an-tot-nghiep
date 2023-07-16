@@ -612,12 +612,22 @@ void ThemThe()
 }
 
 
+void setDate() {
+  // Cài đặt múi giờ Hà Nội (+7 giờ so với múi giờ GMT)
+  DateTime now = DateTime(F(__DATE__), F(__TIME__));
+  int currentDay = now.day(); // Lấy giá trị ngày hiện tại
+  int currentMonth = now.month(); // Lấy giá trị tháng hiện tại
+  int currentYear = now.year(); // Lấy giá trị năm hiện tại
+  now = DateTime(currentYear, currentMonth, currentDay + 1, now.hour(), now.minute(), now.second()); // Tạo đối tượng DateTime mới với ngày mới
+  rtc.adjust(now);
+}
+
+
 
 void setup()
 {
   Serial.begin(19200);
   esp.begin(19200);
-  //SerialUART.begin(19200);
   lcd.init();
   lcd.backlight();
   SPI.begin();
@@ -629,9 +639,9 @@ void setup()
 
 
   // Xóa toàn bộ EEPROM
-  //  for (int i = 0; i < EEPROM.length(); i++) {
-  //    EEPROM.write(i, 0);
-  //  }
+  //    for (int i = 0; i < EEPROM.length(); i++) {
+  //      EEPROM.write(i, 0);
+  //    }
 
   // Đọc và in giá trị lưu trong EEPROM từ địa chỉ 0 đến 255
   //  Serial.print("\n");
@@ -645,18 +655,44 @@ void setup()
 
 
 
-  //set date
-  //    DateTime currentTime = DateTime(2023, 7, 7, 12, 9, 0);
-  //    rtc.adjust(currentTime);
+  // Lưu giờ, phút và giây theo múi giờ Hà Nội vào currentTime
+  //  DateTime currentTime = DateTime(year, month, day, hour, minute, second);
+  //  rtc.adjust(currentTime);
 
+
+
+  setDate();
 
 }
 
 
+
+const int TIME_CHECK_INTERVAL = 1000; // Thời gian kiểm tra giây (1 giây)
+const int MINUTE_THRESHOLD = 60; // Ngưỡng lệch phút (60 giây)
+
+unsigned long lastTimeChecked = 0; // Biến lưu thời gian kiểm tra cuối cùng
+int secondsElapsed = 0; // Biến đếm số giây đã trôi qua
 void loop()
 {
+
   chedomocua = AVR_EEPROM.read_2_byte(addrcheDoMocua);
-  unsigned long lastGetDataTime = 0;
+  unsigned long lastGetDataTime = 0;unsigned long currentTime = millis();
+
+  // Kiểm tra giây mỗi TIME_CHECK_INTERVAL
+  if (currentTime - lastTimeChecked >= TIME_CHECK_INTERVAL) {
+    lastTimeChecked = currentTime;
+    secondsElapsed++;
+
+    // Kiểm tra lệch phút vượt quá ngưỡng
+    if (secondsElapsed >= MINUTE_THRESHOLD) {
+      secondsElapsed = 0; // Đặt lại biến đếm về 0
+      setDate(); // Gọi hàm setDate() để cài đặt lại giờ
+    }
+  }
+
+
+
+  
   if (digitalRead(menu) == 0)
   {
     delay(50);

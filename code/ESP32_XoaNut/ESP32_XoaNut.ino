@@ -193,8 +193,8 @@ void getDataFromSQL()
   if (httpResponseCode == HTTP_CODE_OK) {  // HTTP_CODE_OK tương đương với 200 OK
     String payload = http.getString();
 
-    //    Serial.println("\n");
-    //    Serial.println(payload);
+    Serial.println("\n");
+    Serial.println(payload);
 
 
     int n = 0;
@@ -203,6 +203,7 @@ void getDataFromSQL()
       n++;
       pos++;
     }
+    
 
     const size_t capacity = JSON_ARRAY_SIZE(n) + n * JSON_OBJECT_SIZE(4) + 220;
     DynamicJsonDocument doc(capacity);
@@ -359,17 +360,18 @@ void setup()
 boolean wifiConnected = false; // Biến flag để kiểm tra trạng thái kết nối WiFi
 void loop()
 {
-  if (!wifiConnected) {
-    Connect_Wifi(); // Kết nối WiFi khi mất kết nối hoặc chưa kết nối
-  }
-  // Kiểm tra trạng thái kết nối WiFi
-  if (WiFi.status() != WL_CONNECTED) {
-    wifiConnected = false; // Kết nối mất, cần kết nối lại
-  } else {
-    wifiConnected = true; // Đã kết nối WiFi
-  }
+    if (!wifiConnected) {
+      Serial.println("\n");
+      Connect_Wifi(); // Kết nối WiFi khi mất kết nối hoặc chưa kết nối
+    }
+    // Kiểm tra trạng thái kết nối WiFi
+    if (WiFi.status() != WL_CONNECTED) {
+      wifiConnected = false; // Kết nối mất, cần kết nối lại
+    } else {
+      wifiConnected = true; // Đã kết nối WiFi
+    }
 
-  
+
 
   if ((danggoi == 1 ) && (millis() - last2 > 30000))
   {
